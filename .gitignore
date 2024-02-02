@@ -1,2 +1,6 @@
 .vnev/
 __pycache__/
+output/*
+*.mp3
+*.png
+config.yaml
