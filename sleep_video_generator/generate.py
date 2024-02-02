@@ -38,7 +38,7 @@ def generate_image(prompt: str) -> np.ndarray:
     )
 
     cv2.imwrite(IMAGE_OUTPUT_PATH, generated_image)
-    return generated_image
+    return cv2.cvtColor(generated_image, cv2.COLOR_BGRA2RGBA)
 
 
 def generate_thumbnail(
@@ -53,6 +53,7 @@ def generate_thumbnail(
 
     # Convert hex color to BGR
     fontcolor = tuple(int(fontcolor.lstrip("#")[i : i + 2], 16) for i in (0, 2, 4))
+    fontcolor = (fontcolor[2], fontcolor[1], fontcolor[0])
 
     if len(texts.split("\\n")) == 1:
         main_text, sub_text = texts, ""
@@ -74,7 +75,7 @@ def generate_thumbnail(
     )
 
     cv2.imwrite(THUMBNAIL_OUTPUT_PATH, image)
-    return np.array(image), THUMBNAIL_OUTPUT_PATH
+    return cv2.cvtColor(image, cv2.COLOR_BGRA2RGBA), THUMBNAIL_OUTPUT_PATH
 
 
 def _write_text_on_image(
@@ -110,6 +111,7 @@ def _write_text_on_image(
 
     if sub_text:
         fontsize /= 1.5
+        thickness -= 1
         sub_textsize = cv2.getTextSize(
             sub_text, eval("cv2." + fontstyle), fontsize, thickness
         )[0]
