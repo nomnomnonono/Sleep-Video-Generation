@@ -1,5 +1,6 @@
 import gradio as gr
 from sleep_video_generator.generate import (
+    archive_files,
     generate_image,
     generate_thumbnail,
     generate_video,
@@ -51,6 +52,9 @@ def main() -> None:
                         3, 30, 10, step=1, label="Video Duration (minutes)"
                     )
                 video_generate_button = gr.Button("Video Generate")
+
+                folder_name = gr.Textbox("Folder Name", label="Folder Name")
+                archive_button = gr.Button("Archive Files")
             with gr.Column(scale=1.5):
                 image_output = gr.Image(label="Output image")
                 thumbnail_path = gr.File(label="Output Thumbnail")
@@ -84,6 +88,11 @@ def main() -> None:
                 video_duration,
             ],
             outputs=video_output,
+        )
+
+        archive_button.click(
+            archive_files,
+            inputs=[folder_name],
         )
 
     demo.launch()

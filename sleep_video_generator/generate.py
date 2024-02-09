@@ -1,5 +1,6 @@
 import math
 import os
+import shutil
 from io import BytesIO
 
 import cv2
@@ -152,3 +153,15 @@ def _preprocess_audio(audio_path: str, duration: int) -> int:
     audio.export(AUDIO_OUTPUT_PATH, format="mp3")
 
     return audio.duration_seconds
+
+
+def archive_files(folder_name: str) -> None:
+    folder_name = os.path.join("output", folder_name)
+    os.makedirs(folder_name, exist_ok=True)
+    for file in [
+        IMAGE_OUTPUT_PATH,
+        THUMBNAIL_OUTPUT_PATH,
+        AUDIO_OUTPUT_PATH,
+        VIDEO_OUTPUT_PATH,
+    ]:
+        shutil.move(file, folder_name)
